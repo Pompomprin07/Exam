@@ -94,8 +94,6 @@ public class SubjectDao extends Dao {
 			if(old == null){
 				// 新規登録
 
-
-
 				st = con.prepareStatement("insert into subject(cd, name, school_cd) values(?, ?, ?)");
 				st.setString(1,	subject.getCd());
 				st.setString(2, subject.getName());
