@@ -22,7 +22,7 @@
               <th>科目名</th>
               <th></th>
               <th></th>
-            </tr>///
+            </tr>////
             <c:forEach var="student" items="${students}">
               <tr>
                 <td>${student.entYear}</td>
