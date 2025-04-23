@@ -103,7 +103,7 @@ public class SubjectListAction extends Action{
 		    // リクエストに在学フラグをセット
 		    req.setAttribute("f3", isAttendStr);
 		}
-		////////////////
+		////////////////////
 		System.out.println(students.size());
 		// リクエストに学生リストをセット
 		req.setAttribute("students", students);
