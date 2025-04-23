@@ -25,22 +25,22 @@ public class SubjectListAction extends Action{
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		// ローカル変数の宣言
-		String entYearStr=""; // 入力された入学年度
-		String classNum=""; // 入力されたクラス番号
-		String isAttendStr=""; // 入力された在学フラグ
-		int entYear = 0; // 入学年度
-		boolean isAttend = false; // 在学フラグ
-		List<Student> students = null; // 学生リスト
+		String entYearStr=""; // 入力された入学年度⇒入力された科目コード
+		String classNum=""; // 入力されたクラス番号⇒入力された科目名
+		String isAttendStr=""; // 入力された在学フラグ⇒いらん
+		int entYear = 0; // 入学年度⇒いらん
+		boolean isAttend = false; // 在学フラグ⇒いらん
+		List<Student> students = null; // 学生リスト⇒いらん
 		LocalDate todeysDate = LocalDate.now(); // LocalDateインスタンスを取得
-		int year = todeysDate.getYear(); // 現在の年を取得
-		StudentDao sDao = new StudentDao(); // 学生Dao
-		ClassNumDao cNumDao = new ClassNumDao(); // クラス番号Daoを初期化
+		int year = todeysDate.getYear(); // 現在の年を取得⇒いらん
+		StudentDao sDao = new StudentDao(); // 学生Dao⇒科目Dao
+		ClassNumDao cNumDao = new ClassNumDao(); // クラス番号Daoを初期化⇒いらん
 		Map<String, String> errors = new HashMap<>();
 
 		// リクエストパラメーターの取得
 		entYearStr = req.getParameter("f1");
 		classNum = req.getParameter("f2");
-		isAttendStr = req.getParameter("f3");
+		isAttendStr = req.getParameter("f3");//いらん
 
 		// ビジネスロジック
 		if (entYearStr != null && !entYearStr.equals("0") && !entYearStr.isEmpty()) {
