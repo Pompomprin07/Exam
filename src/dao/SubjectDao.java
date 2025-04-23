@@ -172,6 +172,7 @@ public class SubjectDao extends Dao {
 			}
 		}
 
+
 		if(cnt>0){
 			return true;
 		}else{
