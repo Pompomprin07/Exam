@@ -70,7 +70,7 @@ public class SubjectListAction extends Action{
 //		// DBからデータ取得
 //		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
 		/////////////////////////////////////////////////////////////////////////////////////////
-//		System.out.println(teacher.getSchool());
+		System.out.println(teacher.getSchool());
 		// 学校コードの抽出
 		List<String> list = cNumDao.filter(teacher.getSchool());
 		if (entYear != 0 && !classNum.equals("0")) {
