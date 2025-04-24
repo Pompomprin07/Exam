@@ -82,7 +82,7 @@ public class TestRegistAction extends Action{
 		    students = sDao.filter(teacher.getSchool(), entYear, isAttend);
 		} else if (entYear == 0 && classNum == null || entYear == 0 && classNum.equals("0")) {
 		    // 指定なしの場合
-		    // 全学生情報を取得
+		    // 全学生情報を取得・
 		    students = sDao.filter(teacher.getSchool(), isAttend);
 		    System.out.println("test");
 		} else {
