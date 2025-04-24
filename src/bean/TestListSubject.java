@@ -75,7 +75,7 @@ public class TestListSubject implements Serializable {
         return points.get(key);
     }
 
-    public void putPoint(int key, int value) {
+    public void setPoint(int key, int value) {
         points.put(key, value);
     }
 }
