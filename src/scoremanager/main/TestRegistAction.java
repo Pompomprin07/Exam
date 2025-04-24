@@ -25,23 +25,22 @@ public class TestRegistAction extends Action{
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		// ローカル変数の宣言
-		String entYearStr=""; // 入力された入学年度
-		String classNum=""; // 入力されたクラス番号
-		String isAttendStr=""; // 入力された在学フラグ⇒科目に変更
-		int entYear = 0; // 入学年度
+		String entYearStr=""; // 入力された入学年度⇒入力された科目コード
+		String classNum=""; // 入力されたクラス番号⇒入力された科目名
+		String isAttendStr=""; // 入力された在学フラグ⇒いらん
+		int entYear = 0; // 入学年度⇒いらん
 		boolean isAttend = false; // 在学フラグ⇒いらん
-		List<Student> students = null; // 学生リスト
+		List<Student> students = null; // 学生リスト⇒いらん
 		LocalDate todeysDate = LocalDate.now(); // LocalDateインスタンスを取得
 		int year = todeysDate.getYear(); // 現在の年を取得⇒いらん
-		StudentDao sDao = new StudentDao(); // 学生Dao
-		ClassNumDao cNumDao = new ClassNumDao(); // クラス番号Daoを初期化
+		StudentDao sDao = new StudentDao(); // 学生Dao⇒科目Dao
+		ClassNumDao cNumDao = new ClassNumDao(); // クラス番号Daoを初期化⇒いらん
 		Map<String, String> errors = new HashMap<>();
 
 		// リクエストパラメーターの取得
 		entYearStr = req.getParameter("f1");
 		classNum = req.getParameter("f2");
-		isAttendStr = req.getParameter("f3");
-
+		isAttendStr = req.getParameter("f3");//いらん
 
 		// ビジネスロジック
 		if (entYearStr != null && !entYearStr.equals("0") && !entYearStr.isEmpty()) {
@@ -82,9 +81,9 @@ public class TestRegistAction extends Action{
 		    students = sDao.filter(teacher.getSchool(), entYear, isAttend);
 		} else if (entYear == 0 && classNum == null || entYear == 0 && classNum.equals("0")) {
 		    // 指定なしの場合
-		    // 全学生情報を取得・
+		    // 全学生情報を取得
 		    students = sDao.filter(teacher.getSchool(), isAttend);
-		    System.out.println("test");
+//		    System.out.println("test");
 		} else {
 			errors.put("f1", "クラスを指定する場合は入学年度も指定してください");
 		    req.setAttribute("errors", errors);
@@ -104,6 +103,7 @@ public class TestRegistAction extends Action{
 		    // リクエストに在学フラグをセット
 		    req.setAttribute("f3", isAttendStr);
 		}
+		////////////////////..b
 		System.out.println(students.size());
 		// リクエストに学生リストをセット
 		req.setAttribute("students", students);
