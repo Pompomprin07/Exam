@@ -12,9 +12,6 @@
 	        <div class="alert alert-success" role="alert">
 	            ログアウトしました
 			</div>
-	 		<%-- ログインurl --%>
-			<% String url_name = "http://localhost:8080/teamC/scoremanager/Login.action";%>
-
         	<div>
 			<a href="/teamC/scoremanager/Login.action" class="btn btn-primary ms-2">ログイン</a>
 			</div>
