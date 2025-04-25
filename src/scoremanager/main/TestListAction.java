@@ -10,6 +10,9 @@ public class TestListAction extends Action{
 	public void execute
 	(HttpServletRequest req,HttpServletResponse res
 			) throws Exception{
+		
+		
+		
 		req.getRequestDispatcher("test_list.jsp").forward(req, res);
 	}
 }

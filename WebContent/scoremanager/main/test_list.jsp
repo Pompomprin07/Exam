@@ -9,13 +9,12 @@
   <c:param name="scripts"></c:param>
   <c:param name="content">
     <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
+      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
 
     <div class="container">
-        <div class="title">成績参照</div>
-
         <!-- 科目情報 -->
         <form method="get">
+        <div class="title">科目情報</div>
         <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
           <div class="col-3">
             <label class="form-label" for="student-f1-select">入学年度</label>
