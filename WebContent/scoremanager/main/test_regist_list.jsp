@@ -62,7 +62,7 @@
       </form>
       <c:choose>
         <c:when test="${students.size()>0}">
-          <div>検索結果：${students.size()}件</div>
+          <div>科目:${subject.size()}(${count.size()})回</div>
           <table class="table table-hover">
             <tr>
               <th>入学年度</th>
