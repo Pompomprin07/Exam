@@ -47,12 +47,36 @@
             </select>
           </div>
 
+
+
           <div class="col-2 text-center">
             <button class="btn btn-secondary" id="filter-button">検索</button>
           </div>
           <div class="mt-2 text-warning">${errors.get("f1")}</div>
         </div>
       </form>
+
+      <!-- 学生情報 -->
+      <form method="get">
+
+        <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
+        <div class="col-2 text-center">学生情報</div>
+          <div class="col-3">
+            <label class="form-label" for="student-f1-select">学生番号</label>
+            <select class="form-select" id="student-f1-select" name="f1">
+              <option value="0">--------</option>
+              <c:forEach var="year" items="${ent_year_set}">
+                <%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+                <option value="${year}" <c:if test="${year==f1}">selected</c:if>>${year}</option>
+                </c:forEach>
+                </select>
+                </div>
+                <div class="col-2 text-center">
+            <button class="btn btn-secondary" id="filter-button">検索</button>
+          </div>
+          <div class="mt-2 text-warning">${errors.get("f1")}</div>
+                </div>
+                </form>
 
         <!-- ヒントメッセージ -->
         <p style="color: blue;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
