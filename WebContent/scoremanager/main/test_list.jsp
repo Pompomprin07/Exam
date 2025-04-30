@@ -64,7 +64,7 @@
         <div class="col-2 text-center">学生情報</div>
           <div class="col-4">
             <label class="form-label" for="student-f1-select">学生番号</label>
-            <input class="form-select" id="student-f1-select" name="f1" placeholder="学生番号を入力してください">
+            <input class="form-text" id="student-f1-text" name="f3" placeholder="学生番号を入力してください">
               <c:forEach var="year" items="${ent_year_set}">
                 <%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
                 <option value="${year}" <c:if test="${year==f1}">selected</c:if>>${year}</option>
