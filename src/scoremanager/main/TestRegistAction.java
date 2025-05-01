@@ -2,6 +2,7 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,36 +24,44 @@ public class TestRegistAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // パラメータの取得
+        // パラメータ取得
         String entYearStr = req.getParameter("f1");
         String classNum = req.getParameter("f2");
         String subject = req.getParameter("f3");
-        String counStr = req.getParameter("f4");
+        String countStr = req.getParameter("f4");
 
-        // エラー用マップ
         Map<String, String> errors = new HashMap<>();
 
-        // 年のリスト作成（現在の年を中心に）
+        // 入学年度リストの作成（10年前〜今年）
         int currentYear = LocalDate.now().getYear();
         List<Integer> entYearSet = new ArrayList<>();
         for (int i = currentYear - 10; i <= currentYear; i++) {
             entYearSet.add(i);
         }
 
-        // クラス番号一覧取得
+        // クラス一覧取得
         ClassNumDao classNumDao = new ClassNumDao();
         List<String> classNumList = classNumDao.filter(teacher.getSchool());
 
-        // 学生取得条件の判定
+        // 科目・回数（固定値で仮作成）
+        List<String> subjectList = Arrays.asList("Java", "Python", "HTML");
+        List<Integer> countList = Arrays.asList(1, 2, 3);
+
+        // 入学年度を数値変換
         int entYear = 0;
         if (entYearStr != null && !entYearStr.equals("0") && !entYearStr.isEmpty()) {
-            entYear = Integer.parseInt(entYearStr);
+            try {
+                entYear = Integer.parseInt(entYearStr);
+            } catch (NumberFormatException e) {
+                errors.put("f1", "入学年度の形式が正しくありません。");
+            }
         }
 
+        // 学生取得
         StudentDao studentDao = new StudentDao();
-        List<Student> students;
+        List<Student> students = new ArrayList<>();
 
-        if (entYear != 0 && !classNum.equals("0")) {
+        if (entYear != 0 && classNum != null && !classNum.equals("0")) {
             students = studentDao.filter(teacher.getSchool(), entYear, classNum, true);
         } else if (entYear != 0) {
             students = studentDao.filter(teacher.getSchool(), entYear, true);
@@ -63,13 +72,15 @@ public class TestRegistAction extends Action {
             students = studentDao.filter(teacher.getSchool(), true);
         }
 
-        // リクエストへのセット
+        // JSPに渡すデータのセット
         req.setAttribute("f1", entYear);
         req.setAttribute("f2", classNum);
         req.setAttribute("f3", subject);
-        req.setAttribute("f4", counStr);
+        req.setAttribute("f4", countStr);
         req.setAttribute("ent_year_set", entYearSet);
         req.setAttribute("class_num_set", classNumList);
+        req.setAttribute("subject_set", subjectList);
+        req.setAttribute("count_set", countList);
         req.setAttribute("students", students);
         req.setAttribute("errors", errors);
 
