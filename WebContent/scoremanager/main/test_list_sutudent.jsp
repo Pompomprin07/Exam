@@ -79,4 +79,16 @@ pageEncoding="UTF-8"%>
 </c:param>
 </c:import>
 
+<c:choose>
+	<c:when test="${students.size()>0}">
+	<div>氏名:${student.name}(${student-f1-input})</div>
+	<table>
+	<tr>
+	<th>科目名</th>
+	<th>科目コード</th>
+	<th>回数</th>
+	<th>点数</th>
+	</table>
+	</c:when>
+</c:choose>
 
