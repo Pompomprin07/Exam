@@ -9,7 +9,7 @@
     <section class="me-4">
       <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4"><strong>クラス情報登録</strong></h2>
 
-      <form action="SubjectCreateExecute.action" method="post" class="px-4">
+      <form action="ClassCreateExecute.action" method="post" class="px-4">
         <%-- ②③ 科目コード入力 --%>
         <div class="mb-3">
           <label class="form-label" for="subject-cd">クラスコード</label>
@@ -17,7 +17,7 @@
           <div class="text-danger">${errors.cd}</div>
         </div>
 
-        <%-- ④⑤ 科目名入力 --%>
+        <%-- ④⑤ クラス名入力 --%>
         <div class="mb-3">
           <label class="form-label" for="subject-name">クラス名</label>
           <input type="text" class="form-control" id="subject-name" name="name" placeholder="クラス名を入力してください" value="${param.name}">

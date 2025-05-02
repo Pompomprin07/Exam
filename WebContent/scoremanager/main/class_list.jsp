@@ -33,7 +33,7 @@
                     <a href="ClassUpdate.action?cd=${subject.cd}">変更</a>
                   </td>
                   <td class="text-center">
-                    <a href="SubjectDelete.action?cd=${subject.cd}">削除</a>
+                    <a href="ClassDelete.action?cd=${subject.cd}">削除</a>
                   </td>
                 </tr>
               </c:forEach>

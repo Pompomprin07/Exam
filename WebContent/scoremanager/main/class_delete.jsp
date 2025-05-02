@@ -11,10 +11,10 @@
       <div class="px-4">
 
         <form action="SubjectDeleteExecute.action" method="post" class="mt-4">
-          <input type="hidden" name="cd" value="${subject.cd}">
+          <input type="hidden" name="cd" value="${class.cd}">
 
           <div class="mb-3">
-            <p>「${subject.name}」を削除してもよろしいですか</p>
+            <p>「${class.name}」を削除してもよろしいですか</p>
             <button type="submit" class="btn btn-danger">削除</button>
           </div>
 

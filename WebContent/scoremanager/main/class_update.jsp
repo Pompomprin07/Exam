@@ -12,15 +12,15 @@
        <%-- 科目コード（固定：readonly） --%>
 		<div class="mb-3">
 		  <label class="form-label">クラスコード</label>
-		  <p class="form-control-plaintext ps-3">${subject.cd}</p>
-		  <input type="hidden" name="cd" value="${subject.cd}">
+		  <p class="form-control-plaintext ps-3">${class.cd}</p>
+		  <input type="hidden" name="cd" value="${class.cd}">
 		</div>
 
 
 		<%-- 科目名（変更可能） --%>
 		<div class="mb-3">
 		  <label class="form-label">クラス名</label>
-		  <input type="text" class="form-control" name="name" value="${subject.name}">
+		  <input type="text" class="form-control" name="name" value="${class.name}">
 		</div>
 
 
