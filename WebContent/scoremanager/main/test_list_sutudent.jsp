@@ -73,15 +73,7 @@ pageEncoding="UTF-8"%>
 </form>
 
         <!-- ヒントメッセージ -->
-<p style="color: blue;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
-</div>
-</section>
-</c:param>
-</c:import>
-
-<c:choose>
-	<c:when test="${students.size()>0}">
-	<div>氏名:${student.name}(${student-f1-input})</div>
+<p style="color: blue;">氏名:${sutudent.name}($student.no)</p>
 	<table>
 	<tr>
 	<th>科目名</th>
@@ -89,6 +81,13 @@ pageEncoding="UTF-8"%>
 	<th>回数</th>
 	<th>点数</th>
 	</table>
-	</c:when>
-</c:choose>
+
+</div>
+</section>
+</c:param>
+</c:import>
+
+
+
+
 
