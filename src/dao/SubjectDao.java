@@ -68,12 +68,14 @@ public class SubjectDao extends Dao {
 			st = con.prepareStatement("select * from subject where school_cd=?");
 			st.setString(1, school.getCd());
 			rs=st.executeQuery();
-			while(rs.next()){
-				subject.setCd(rs.getString("cd"));
-				subject.setName(rs.getString("name"));
-				subject.setSchool(school);
-				list.add(subject);
+			while (rs.next()) {
+			    Subject subject1 = new Subject(); // ★必ずループ内で new する！
+			    subject1.setCd(rs.getString("cd"));
+			    subject1.setName(rs.getString("name"));
+			    subject1.setSchool(school);
+			    list.add(subject1);
 			}
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
