@@ -27,6 +27,18 @@ public class TestListStudent implements Serializable {
      */
     private int point;
 
+    private Student student;
+
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+
     public String getSubjectName() {
         return subjectName;
     }

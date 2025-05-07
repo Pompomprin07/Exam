@@ -3,7 +3,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +12,11 @@ import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 	// 入学年度と学校コードのみから生徒の成績情報を取得するためのsql
-	private String baseSql = "select student_no,subject_cd, test.school_cd,test.no, point,test.class_num,name,ent_year,is_attend "
-							+ "from test join student "
-							+ "on test.student_no=student.no "
-							+ "where ent_year=? and test.school_cd=? ";
+	private String baseSql = "SELECT student_no, subject_cd, test.school_cd, test.no, point, test.class_num, name, ent_year, is_attend "
+            + "FROM test JOIN student "
+            + "ON test.student_no = student.no "
+            + "WHERE ent_year = ? AND test.school_cd = ? AND test.class_num = ? AND subject_cd = ?";
+
 
 	private List<TestListSubject> postFilter(ResultSet rs) throws Exception{
 		List<TestListSubject> list = new ArrayList<>();
@@ -26,6 +26,7 @@ public class TestListSubjectDao extends Dao {
 			testListSubject.setEntYear(rs.getInt("ent_year"));
 			testListSubject.setStudentNo(rs.getString("student_no"));
 			testListSubject.setStudentName(rs.getString("name"));
+			testListSubject.setClassNum(rs.getString("class_num"));
 			testListSubject.setPoint(rs.getInt("no"), rs.getInt("point"));
 			list.add(testListSubject);
 		}
@@ -41,34 +42,22 @@ public class TestListSubjectDao extends Dao {
 		ResultSet rs = null;
 
 		try{
-			st=con.prepareStatement(baseSql);
+			st = con.prepareStatement(baseSql);
 			st.setInt(1, entYear);
 			st.setString(2, school.getCd());
-			rs=st.executeQuery();
-			if(rs.next()){
-				list=this.postFilter(rs);
-			}else{
-				list = null;
-			}
+			st.setString(3, classNum);
+			st.setString(4, subject.getCd());
+
+			   System.out.println("★★ SQL実行：entYear=" + entYear + ", classNum=" + classNum + ", subjectCd=" + subject.getCd() + ", school=" + school.getCd());
+
+	            rs = st.executeQuery();
+	            list = this.postFilter(rs);
 		}catch(Exception e){
 			throw e;
 		}finally{
-			if(st != null){
-				try{
-					st.close();
-				}catch(SQLException sqle){
-					throw sqle;
-				}
-			}
-
-			if(con != null){
-				try{
-					con.close();
-				}catch(SQLException sqle){
-					throw sqle;
-				}
-			}
-		}
+	        if (st != null) st.close();
+	        if (con != null) con.close();
+	    }
 
 		return list;
 

@@ -8,12 +8,12 @@
   <c:param name="scripts"></c:param>
   <c:param name="content">
     <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照(科目)</h2>
+      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照(学生)</h2>
 
     <div class="container">
         <!-- 科目情報 -->
         <%-- action追加(下にも1つ追加) --%>
-        <form method="get" action="TestListSubjectExecute.action">
+       <form method="get" action="TestListSubjectExecute.action">
         <div class="title">科目情報</div>
         <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
           <div class="col-3">
@@ -22,7 +22,7 @@
               <option value="0">--------</option>
               <c:forEach var="year" items="${ent_year_set}">
                 <%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
-               <option value="${year}" <c:if test="${year eq f1}">selected</c:if>>${year}</option>
+                <option value="${year}" <c:if test="${year==f1}">selected</c:if>>${year}</option>
               </c:forEach>
             </select>
           </div>
@@ -32,24 +32,24 @@
               <option value="0">--------</option>
               <c:forEach var="num" items="${class_num_set}">
                 <%-- 現在のnumと選択されていたf2が一致していた場合selectedを追記 --%>
-                <option value="${num}" <c:if test="${num eq f2}">selected</c:if>>${num}</option>
+                <option value="${num}" <c:if test="${num==f2}">selected</c:if>>${num}</option>
               </c:forEach>
             </select>
           </div>
           <div class="col-3">
             <label class="form-label" for="student-f3-select">科目</label>
-            <select class="form-select" id="student-f3-select" name="f3">
-              <option value="0">--------</option>
-              <c:forEach var="subject" items="${subjectList}">
-                <%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
-                <option value="${subject.cd}" <c:if test="${subject.cd eq f3}">selected</c:if>>${subject.name}</option>
-              </c:forEach>
-            </select>
+			  <select class="form-select" id="student-f3-select" name="f3">
+			    <option value="0">--------</option>
+			    <c:forEach var="subject" items="${subjectList}">
+			      <option value="${subject.cd}" <c:if test="${subject.cd == f3}">selected</c:if>>${subject.name}</option>
+			    </c:forEach>
+			  </select>
           </div>
 
 
+
           <div class="col-2 text-center">
-            <button class="btn btn-secondary" id="filter-button">検索</button>
+			<button type="submit" class="btn btn-secondary" id="filter-button">検索</button>
           </div>
           <div class="mt-2 text-warning">${errors.get("f1")}</div>
         </div>
@@ -65,58 +65,45 @@
        			placeholder="学生番号を入力してください" value="${subjectf1}">
 			</div>
 				<div class="col-2 text-center">
-				<button class="btn btn-secondary" id="filter-button">検索</button>
+				<button type="submit" class="btn btn-secondary" id="filter-button">検索</button>
+
 			</div>
 				<div class="mt-2 text-warning">${errors.get("f1")}</div>
 			</div>
 		</form>
 
-        <!-- ヒントメッセージ -->
-       <p style="color: blue;"><p style="color: blue;">科目:${subjectName}</p>
+			<!-- ヒントメッセージ -->
+			<c:if test="${not empty studentName}">
+			  <p style="color: blue;">氏名：${studentName}（学生番号：${subjectf1}）</p>
+			</c:if>
 
-    	<c:if test="${not empty testListSubject}">
-		  <table class="table table-striped mt-3">
-		    <thead>
-		      <tr>
-		        <th>入学年度</th>
-		        <th>クラス</th>
-		        <th>学生番号</th>
-		        <th>氏名</th>
-		        <th>1回</th>
-		        <th>2回</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <c:forEach var="sub" items="${testListSubject}">
-				  <tr>
-				    <td>${sub.entYear}</td>
-				    <td>${sub.classNum}</td>
-				    <td>${sub.studentNo}</td>
-				    <td>${sub.studentName}</td>
+			<c:if test="${not empty message}">
+			  <div class="alert alert-info">${message}</div>
+			</c:if>
 
-					<td>
-					  <%
-					    Integer point1 = ((bean.TestListSubject)pageContext.getAttribute("sub")).getPoint(1);
-					    out.print(point1 != null ? point1 : "-");
-					  %>
-					</td>
+			<c:if test="${not empty testList}">
+			  <table class="table table-striped mt-3">
+			    <thead>
+			      <tr>
+			        <th>科目名</th>
+			        <th>科目コード</th>
+			        <th>回数</th>
+			        <th>得点</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <c:forEach var="t" items="${testList}">
+			        <tr>
+			          <td>${t.subjectName}</td>
+			          <td>${t.subjectCd}</td>
+			          <td>${t.num}</td>
+			          <td>${t.point}</td>
+			        </tr>
+			      </c:forEach>
+			    </tbody>
+			  </table>
+			</c:if>
 
-					<td>
-					  <%
-					    Integer point2 = ((bean.TestListSubject)pageContext.getAttribute("sub")).getPoint(2);
-					    out.print(point2 != null ? point2 : "-");
-					  %>
-					</td>
-
-				  </tr>
-			  </c:forEach>
-		    </tbody>
-		  </table>
-		</c:if>
-
-		<c:if test="${not empty message}">
-		  <div class="alert alert-info mt-3">${message}</div>
-		</c:if>
     </div>
 </section>
 </c:param>

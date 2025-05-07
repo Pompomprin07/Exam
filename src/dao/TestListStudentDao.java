@@ -8,81 +8,101 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
+import bean.Student;
 import bean.Subject;
 import bean.TestListStudent;
 
-public class TestListStudentDao {
-	// 入学年度と学校コードのみから生徒の成績情報を取得するためのsql
-	private String baseSql = "select student_no,subject_cd, test.school_cd,test.no, point,test.class_num,name,ent_year,is_attend "
-			+ "from test join student "
-			+ "on test.student_no=student.no "
-			+ "where ent_year=? and test.school_cd=? ";
+public class TestListStudentDao extends Dao {
 
+    // 共通SQL（filterメソッド用）
+    private String filterSql =
+        "SELECT student.no AS student_no, student.name AS student_name, test.subject_cd, test.no, test.point " +
+        "FROM test " +
+        "JOIN student ON test.student_no = student.no " +
+        "WHERE student.ent_year = ? AND student.class_num = ? AND test.subject_cd = ? AND test.school_cd = ? " +
+        "ORDER BY test.subject_cd, test.no, student.no";
 
-			private List<TestListStudent> postFilter(ResultSet rs) throws Exception{
-		List<TestListStudent> list = new ArrayList<>();
+    // 学生番号で検索（修正済み）
+    private String studentSql =
+        "SELECT test.student_no, student.name AS student_name, test.subject_cd, test.school_cd, test.no, test.point, " +
+        "subject.name AS subject_name " +
+        "FROM test " +
+        "JOIN subject ON test.subject_cd = subject.cd AND test.school_cd = subject.school_cd " +
+        "JOIN student ON test.student_no = student.no " +
+        "WHERE test.student_no = ? " +
+        "ORDER BY test.subject_cd, test.no";
 
-		SubjectDao subDao = new SubjectDao();
-		SchoolDao schoolDao = new SchoolDao();
+    // filterメソッド（Subject一覧画面用）
+    public List<TestListStudent> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
+        List<TestListStudent> list = new ArrayList<>();
+        Connection con = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
-		while(rs.next()){
-			Subject subject = new Subject();
-			subDao.get(rs.getString("subject_cd"), schoolDao.get(rs.getString("school_cd")));
+        try {
+            st = con.prepareStatement(filterSql);
+            st.setInt(1, entYear);
+            st.setString(2, classNum);
+            st.setString(3, subject.getCd());
+            st.setString(4, school.getCd());
+            rs = st.executeQuery();
 
-			TestListStudent testListStudent = new TestListStudent();
-			testListStudent.setSubjectName(subject.getName());
-			testListStudent.setSubjectCd(subject.getCd());
-			testListStudent.setNum(rs.getInt("no"));
-			testListStudent.setPoint(rs.getInt("point"));
-			list.add(testListStudent);
-		}
+            while (rs.next()) {
+                TestListStudent testListStudent = new TestListStudent();
+                testListStudent.setSubjectCd(rs.getString("subject_cd"));
+                testListStudent.setNum(rs.getInt("no"));
+                testListStudent.setPoint(rs.getInt("point"));
 
-		return list;
-	}
+                Student student = new Student();
+                student.setNo(rs.getString("student_no"));
+                student.setName(rs.getString("student_name"));
+                testListStudent.setStudent(student);
 
-	public List<TestListStudent> filter(int entYear, String classNum, Subject subject, School school) throws Exception{
-		List<TestListStudent> list = new ArrayList<>();
+                list.add(testListStudent);
+            }
 
-		Connection con = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {}
+            if (st != null) try { st.close(); } catch (SQLException e) {}
+            if (con != null) try { con.close(); } catch (SQLException e) {}
+        }
 
-		try{
-			st=con.prepareStatement(baseSql);
-			st.setInt(1, entYear);
-			st.setString(2, school.getCd());
-			rs=st.executeQuery();
-			if(rs.next()){
-				list=this.postFilter(rs);
-			}else{
-				list = null;
-			}
-		}catch(Exception e){
-			throw e;
-		}finally{
-			if(st != null){
-				try{
-					st.close();
-				}catch(SQLException sqle){
-					throw sqle;
-				}
-			}
+        return list;
+    }
 
-			if(con != null){
-				try{
-					con.close();
-				}catch(SQLException sqle){
-					throw sqle;
-				}
-			}
-		}
+    // 学生番号で検索（詳細表示用）修正済み
+    public List<TestListStudent> StudentNo(String studentNo) throws Exception {
+        List<TestListStudent> list = new ArrayList<>();
+        Connection con = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
-		return list;
-	}
+        try {
+            st = con.prepareStatement(studentSql);
+            st.setString(1, studentNo);
+            rs = st.executeQuery();
 
-	private Connection getConnection() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
+            while (rs.next()) {
+                TestListStudent testListStudent = new TestListStudent();
+                testListStudent.setSubjectCd(rs.getString("subject_cd"));
+                testListStudent.setSubjectName(rs.getString("subject_name"));
+                testListStudent.setNum(rs.getInt("no"));
+                testListStudent.setPoint(rs.getInt("point"));
+
+                Student student = new Student();
+                student.setNo(rs.getString("student_no"));
+                student.setName(rs.getString("student_name"));  // ← 修正ポイント
+                testListStudent.setStudent(student);
+
+                list.add(testListStudent);
+            }
+
+        } finally {
+            if (rs != null) try { rs.close(); } catch (SQLException e) {}
+            if (st != null) try { st.close(); } catch (SQLException e) {}
+            if (con != null) try { con.close(); } catch (SQLException e) {}
+        }
+
+        return list;
+    }
 }
-
